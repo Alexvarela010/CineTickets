@@ -1,18 +1,25 @@
 import
-{ ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+{ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
-import Aura from '@primeng/themes/aura';
+import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
+import {getStorage, provideStorage} from '@angular/fire/storage';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    providePrimeNG({
-      theme:{
-        preset:Aura
-      }
-    })
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideStorage(() => getStorage())
   ]
 
+};
+const firebaseConfig = {
+  apiKey: "AIzaSyCPOLbbJvhQTH5-WvPqw7ewN2z3lFN2Lxc",
+  authDomain: "cinetickets-f28c2.firebaseapp.com",
+  projectId: "cinetickets-f28c2",
+  storageBucket: "cinetickets-f28c2.firebasestorage.app",
+  messagingSenderId: "794353272071",
+  appId: "1:794353272071:web:0c8292a163dc57d15671a2",
+  measurementId: "G-155JHP3EX3"
 };
