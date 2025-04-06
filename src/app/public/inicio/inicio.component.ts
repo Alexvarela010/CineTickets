@@ -1,14 +1,14 @@
-import {Component, inject, Inject, input, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {AsyncPipe, CommonModule} from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {map, Observable, startWith} from 'rxjs';
-import {Pelicula} from './pelicula';
-import {InicioService} from '../inicio.service';
-import {ref, FirebaseStorage, uploadBytesResumable, getDownloadURL, Storage} from '@angular/fire/storage';
-import {AngularFireStorage} from '@angular/fire/compat/storage';
-import {MatCard, MatCardContent, MatCardFooter, MatCardImage} from '@angular/material/card';
+import {Pelicula} from '../../core/models/pelicula';
+import {InicioService} from '../../core/services/InicioService/inicio.service';
+import {ref, uploadBytesResumable, getDownloadURL, Storage} from '@angular/fire/storage';
+import {Pagos} from '../../core/models/pagos';
+import {PeliculaService} from '../../core/services/PeliculaService/pelicula.service';
 
 @Component({
   selector: 'app-inicio',
@@ -23,19 +23,17 @@ import {MatCard, MatCardContent, MatCardFooter, MatCardImage} from '@angular/mat
     MatOption,
     ReactiveFormsModule,
     CommonModule,
-    MatCard,
-    MatCardContent,
-    MatCardImage,
-    MatCardFooter
+
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.css',
-  standalone:true
+  standalone: true
 })
 export default class InicioComponent implements OnInit {
   peliculas: Array<Pelicula> = [];
-  private storage = inject(Storage);
-  constructor(private inicioService: InicioService) {
+  pagos: Array<Pagos> = [];
+
+  constructor(private inicioService: InicioService, private peliculaservice:PeliculaService) {
 
   }
 
@@ -58,7 +56,7 @@ export default class InicioComponent implements OnInit {
   }
 
   getPeliculas() {
-    this.inicioService.getpeliculas().subscribe(
+    this.peliculaservice.getpeliculas().subscribe(
       (peliculas: Array<Pelicula>) => {
         this.peliculas = peliculas;
         console.log(this.peliculas);
@@ -66,32 +64,19 @@ export default class InicioComponent implements OnInit {
     )
   }
 
-  file!:File;
-  UploadProgress$!: Observable<number>
-  downloadURL$!: Observable<string>
-  onFileSelected(event: any) {
-    const archivo=event.target as HTMLInputElement;
-    if (archivo.files) {
-      this.file=archivo.files[0]
-      this.uploadFile(this.file)
-    }
-      }
-   uploadFile(file:File){
-    const filepath=`peliculas/${file.name}`;
-    const fileRef = ref(this.storage,filepath)
-    const uploadfile=uploadBytesResumable(fileRef,file)
-    uploadfile.on('state_changed',
-      (snapshot)=>{
-      const progress=(snapshot.bytesTransferred/snapshot.totalBytes)*100;
-      },
-      (error:any)=>{
-        console.log(error);
-      },
-      async ()=>{
-        const downloadURL=await getDownloadURL(fileRef);
-        console.log("se subio",downloadURL);
-      })
-
+  logout() {
+    localStorage.removeItem('token');
   }
+
+  getPagos() {
+    console.log(2)
+    this.inicioService.getpagos().subscribe(
+      (pagos: Array<Pagos>) => {
+        this.pagos = pagos;
+        console.log(this.pagos);
+      }
+    )
+  }
+
 }
 

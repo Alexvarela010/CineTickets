@@ -1,42 +1,60 @@
  <div class="example-container" [class.example-is-mobile]="isMobile()">
     <mat-toolbar class="example-toolbar">
-      <button style="padding-right: 5px" mat-icon-button (click)="snav.toggle()">
+      <div class=" flex justify-content-center">
+        <p-menu #menu [popup]="true" [model]="items" styleClass="w-full md:w-15rem"></p-menu>
+      </div>
+      <button mat-icon-button (click)="visible = true">
         <mat-icon>menu</mat-icon>
       </button>
       <h1 class="example-app-name">CineTickets</h1>
       <button mat-stroked-button>Cartelera</button>
       <button mat-stroked-button>Estrenos</button>
       <button mat-stroked-button>Mejor valoradas</button>
-      <button  mat-button [matMenuTriggerFor]="appMenu">
+      <button (click)="visiblelogin=true"   mat-button >
         <fa-icon style="" [icon]="faUser"></fa-icon>
       </button>
-      <mat-menu #appMenu="matMenu">
-          <form class="form-control">
-            <input type="text" class="form-control">
-            <button type="submit"></button>
-          </form>
-          <button mat-menu-item>Settings</button>
-        </mat-menu>
-
-
     </mat-toolbar>
-
+   <p-drawer [(visible)]="visible" header="Drawer">
+     <button pRipple class="flex form-control items-center cursor-pointer p-4 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
+       <i class="pi pi-home mr-2"></i>
+       <span class="font-medium">Dashboard</span>
+     </button>
+   </p-drawer>
+   <p-drawer [(visible)]="visiblelogin" position="right">
+     <div class="align-items-center justify-content-center align-content-center">
+       <img class="text-center w-100 h-25 rounded" src="https://firebasestorage.googleapis.com/v0/b/cinetickets-f28c2.firebasestorage.app/o/logo%2FCineTicketsLogo.png?alt=media&token=83759bdb-d2f0-42d2-86a3-db2668a9327e">
+       <form [formGroup]="AuthForm" (ngSubmit)="login(AuthForm.value)"  class="w-100" style="padding-top: 15px">
+         <h2 class="text-center mb-2" >Iniciar sesión</h2>
+         <div class="mb-2">
+           <label>Email</label>
+           <input type="text" class="form-control" formControlName="username" name="email">
+         </div>
+         <div class="mb-2">
+           <label>Contraseña</label>
+           <input type="password" class="form-control" formControlName="password" name="password">
+         </div>
+         <button [disabled]="AuthForm.invalid"  class="btn btn-primary w-100" style="margin-top: 5px; margin-bottom: 10px">Iniciar sesión</button>
+         <div *ngIf="error">
+           <p-message  severity="error" icon="pi pi-times-circle" styleClass="mb-2">Usuario o contraseña incorrectos</p-message>
+         </div>
+         <button class="w-100 btn-outline-secondary btn align-content-center align-items-center justify-content-center" style="margin-top: 10px">
+           <span>Registrate aquí</span>
+         </button>
+       </form>
+     </div>
+   </p-drawer>
     <mat-sidenav-container class="example-sidenav-container"
                            [style.marginTop.px]="isMobile() ? 56 : 0">
-      <mat-sidenav style="background-color: #f5f5f5" #snav [mode]="isMobile() ? 'over' : 'side'"
-                   [fixedInViewport]="isMobile()" fixedTopGap="56">
-        <mat-nav-list>
-          <a mat-list-item routerLink="/inicio">1122</a>
-          <a mat-list-item routerLink="/inicio">233</a>
-          <a mat-list-item>333</a>
-        </mat-nav-list>
-      </mat-sidenav>
 
-      <mat-sidenav-content>
+      <mat-sidenav-content style="padding-top: 64px">
         <router-outlet></router-outlet>
+
       </mat-sidenav-content>
     </mat-sidenav-container>
+   <app-footer></app-footer>
+
   </div>
+
 
 
 <!-- Copyright 2025 Google LLC. All Rights Reserved.

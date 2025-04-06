@@ -1,15 +1,24 @@
 .example-container {
   display: flex;
   flex-direction: column;
-  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 }
-.example-toolbar{
+.example-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   justify-content: space-around;
+  display: flex;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .example-is-mobile .example-toolbar {
   position: fixed;
   z-index: 2;
@@ -27,5 +36,6 @@ h1.example-app-name {
 
   flex: 1 0 auto;
 }
+
 
 

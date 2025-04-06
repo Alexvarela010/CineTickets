@@ -1,18 +1,32 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { AppComponent } from './app/app.component';
+import {bootstrapApplication} from '@angular/platform-browser';
+import {appConfig} from './app/app.config';
+import {AppComponent} from './app/app.component';
 import {routes} from './app/app.routes';
 import {provideRouter} from '@angular/router';
 import {provideHttpClient} from '@angular/common/http';
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {getStorage, provideStorage} from '@angular/fire/storage';
 import {getAnalytics} from '@angular/fire/analytics';
+import {providePrimeNG} from 'primeng/config';
+import Aura from '@primeng/themes/aura';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
-bootstrapApplication(AppComponent,{
-  providers:[provideRouter(routes),
+bootstrapApplication(AppComponent, {
+  providers: [provideRouter(routes),
     provideHttpClient(),
-  provideFirebaseApp(() => initializeApp(firebaseConfig)),
-  provideStorage(() => getStorage()),]
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideAnimationsAsync(),
+    provideStorage(() => getStorage()),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+        options: {
+          prefix: 'p',
+          darkModeSelector: 'false',
+          cssLayer: false
+        }
+      }
+    })]
 })
 const firebaseConfig = {
   apiKey: "AIzaSyCPOLbbJvhQTH5-WvPqw7ewN2z3lFN2Lxc",

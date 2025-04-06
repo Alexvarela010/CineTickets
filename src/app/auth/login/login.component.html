@@ -1,1 +1,17 @@
-<p>login works!</p>
+<div class="align-items-center justify-content-center align-content-center">
+<form [formGroup]="AuthForm" (ngSubmit)="login(AuthForm.value)" style="padding: 16px; width: 250px;">
+  <h2 class="w-100 justify-content-center align-items-center align-content-center" >Iniciar sesión</h2>
+  <div class="mb-2">
+    <label>Email</label>
+    <input formControlName="username" type="text" class="form-control"  name="email">
+  </div>
+  <div class="mb-2">
+    <label>Contraseña</label>
+    <input type="password" class="form-control" formControlName="password" name="password">
+  </div>
+  <button [disabled]="AuthForm.invalid"  class="btn btn-primary w-100" style="margin-top: 5px">Iniciar sesión</button>
+  <button class="w-100 btn-outline-secondary btn align-content-center align-items-center justify-content-center" style="margin-top: 10px">
+    <span>Registrate aquí</span>
+  </button>
+</form>
+</div>

@@ -7,5 +7,6 @@ export class Pelicula{
   public  duracion!: string;
   public  estado!: string;
   public  imagen!: string;
+  public imagenCarrusel!: string;
   public  precioEntrada!: number;
 }

@@ -1,0 +1,69 @@
+<div class="form-container">
+  <form [formGroup]="peliculaForm" (ngSubmit)="uploadFile()">
+    <h2>Formulario de Película</h2>
+    <div class="row">
+      <div class="col-4">
+        <label>Título:</label>
+        <input type="text" formControlName="titulo"/>
+      </div>
+      <div class="col-4">
+        <label>Descripción:</label>
+        <textarea formControlName="descripcion"></textarea>
+      </div>
+      <div class="col-4">
+
+        <label>Categoria:</label>
+        <textarea formControlName="categoria"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+
+        <label>Duración:</label>
+        <input type="text" formControlName="duracion"/>
+      </div>
+      <div class="col-4">
+
+        <label>estado:</label>
+        <select class="form-select" id="inputGroupSelect01" formControlName="estado">
+          <option value="Proximamente">Proximamente</option>
+          <option value="Disponible">Disponible</option>
+          <option value="No disponible">No disponible</option>
+          <option value="En emisión">En emisión</option>
+        </select>
+      </div>
+      <div class="col-4">
+
+        <label>Precio de entrada:</label>
+        <p-inputnumber mode="currency" currency="USD" locale="en-US" inputId="integeronly" formControlName="precioEntrada"></p-inputnumber>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <label>imagen de las tarjetas:</label>
+        <input (change)="onFileSelected($event)"
+               type="file" accept="images/*"
+               placeholder="imagen"
+               required
+               class="form-control"
+        >
+        <img *ngIf="previewUrl" [src]="previewUrl" alt="Preview" style="max-width: 300px; margin-top: 10px;">
+
+      </div>
+      <div class="col-6">
+        <label>imagen del carrusel:</label>
+        <input (change)="onFileSelected1($event)"
+               type="file" accept="images/*"
+               placeholder="imagen del carrusel"
+               required
+               class="form-control"
+        >
+        <img *ngIf="previewUrl1" [src]="previewUrl1" alt="Preview" style="max-width: 300px; margin-top: 10px;">
+
+      </div>
+    </div>
+
+
+    <button type="submit" [disabled]="peliculaForm.invalid">Guardar Película</button>
+  </form>
+</div>

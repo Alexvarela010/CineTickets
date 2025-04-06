@@ -1,0 +1,61 @@
+<div class="card">
+  <p-table class="px-4 py-3 p-datatable-gridlines"
+           #dt2
+           [value]="peliculas"
+           [paginator]="true"
+           [rows]="10"
+           [globalFilterFields]="['titulo', 'descripcion', 'categoria', 'precioEntrada']"
+           dataKey="peliculaId"
+           [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template #caption>
+      <div class="d-flex justify-content-between align-items-center ">
+        <button routerLink="/Admin/peliculas/crear" class="btn btn-success">
+          Crear Película
+        </button>
+        <!-- Input de búsqueda -->
+        <div class="input-group" style="max-width: 300px;">
+          <input
+            type="text"
+            pInputText
+            class="form-control"
+            (input)="onGlobalFilter($event, dt2)"
+            placeholder="Buscar película"
+          />
+          <span class="input-group-text"><i class="pi pi-search"></i></span>
+        </div>
+
+      </div>
+    </ng-template>
+
+    <ng-template  pTemplate="header">
+
+      <tr>
+        <th>Id</th>
+        <th>Título</th>
+        <th>Categoria</th>
+        <th>Duración</th>
+        <th>Estado</th>
+        <th>Precio de entrada</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-pelicula>
+      <tr>
+        <td>{{ pelicula.peliculaId }}</td>
+        <td>{{ pelicula.titulo }}</td>
+        <td>{{ pelicula.categoria }}</td>
+        <td>{{ pelicula.duracion }}</td>
+        <td>{{ pelicula.estado }}</td>
+        <td>{{ pelicula.precioEntrada }}</td>
+        <td>
+          <button class="btn btn-success" style="margin-right: 5px"><i class="fa fa-eye text-white"></i></button>
+          <button class="btn btn-primary" style="margin-right: 5px"><i class="fa fa-pencil "></i></button>
+          <button class="btn btn-danger "  ><i class="fa fa-trash"  ></i></button>
+
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
