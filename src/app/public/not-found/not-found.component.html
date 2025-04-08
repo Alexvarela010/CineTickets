@@ -1,5 +1,6 @@
 <div class="not-found-container">
   <h1>404</h1>
   <p>¡Oops! La página que buscas no existe.</p>
-  <a routerLink="/inicio" class="back-home">Volver al inicio</a>
+  <a *ngIf="localStorage.getItem('rol')==='user'" routerLink="/inicio" class="back-home">Volver al inicio</a>
+  <a *ngIf="localStorage.getItem('rol')==='admin'" routerLink="/Admin" class="back-home">Volver al inicio</a>
 </div>

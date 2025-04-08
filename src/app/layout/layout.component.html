@@ -3,9 +3,6 @@
     <div class=" flex justify-content-center">
       <p-menu #menu [popup]="true" [model]="items" styleClass="w-full md:w-15rem"></p-menu>
     </div>
-    <button class="text-white" mat-icon-button (click)="visible = true">
-      <mat-icon>menu</mat-icon>
-    </button>
     <button class="text-white" mat-icon-button (click)="abrirmodal()">
       <mat-icon>shopping_cart_checkout</mat-icon>
     </button>
@@ -14,17 +11,13 @@
     <button mat-button mat-stroked-button class="btn btn-toolbar boton-toolbar text-white">Cartelera</button>
     <button mat-button mat-stroked-button class="btn boton-toolbar text-white">Estrenos</button>
     <button mat-button mat-stroked-button class="btn boton-toolbar text-white">Mejor valoradas</button>
-    <button class="btn boton-user text-white" (click)="visiblelogin=true" mat-button>
+    <button *ngIf="localStorage.getItem('logged')==='true'" class="btn boton-user text-white" (click)="menu.toggle($event)" mat-button>
+      <fa-icon style="" [icon]="faUser"></fa-icon>
+    </button>
+    <button *ngIf="localStorage.getItem('logged')==='false' || localStorage.length===0" class="btn boton-user text-white" (click)="visiblelogin=true" mat-button>
       <fa-icon style="" [icon]="faUser"></fa-icon>
     </button>
   </mat-toolbar>
-  <p-drawer [(visible)]="visible" header="Drawer">
-    <button pRipple
-            class="flex form-control items-center cursor-pointer p-4 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-      <i class="pi pi-home mr-2"></i>
-      <span class="font-medium">Dashboard</span>
-    </button>
-  </p-drawer>
   <p-drawer [(visible)]="visiblelogin" position="right">
     <div class="align-items-center justify-content-center align-content-center">
       <img class="text-center w-100 h-25 rounded"

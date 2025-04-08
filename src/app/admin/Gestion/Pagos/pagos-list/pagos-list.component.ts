@@ -49,12 +49,29 @@ export class PagosListComponent implements OnInit {
   }
 
   getpagos() {
-    this.pagoService.getpagos().subscribe(
-      (pagos: Array<Pagos>) => {
-        this.pagos = pagos;
-        console.log(this.pagos);
-      }
-    )
+    let id: number = 0;
+    const idStr = localStorage.getItem('id');
+    if (idStr !== null) {
+      id = parseInt(idStr, 10);
+    }
+    if (localStorage.getItem('rol') === 'user'){
+      this.pagoService.getpagos().subscribe(
+        (pagos: Array<Pagos>) => {
+          for (let i=0; i<pagos.length; i++){
+            if (pagos[i].compra.userInfo.id===id){
+              console.log(id)
+              this.pagos.push(pagos[i]);
+            }
+          }
+        }
+      )
+    }else {
+      this.pagoService.getpagos().subscribe(
+        (pagos: Array<Pagos>) => {
+          this.pagos = pagos;
+        }
+      )
+    }
   }
   showDialog(pagoid:number) {
     this.visible = true;

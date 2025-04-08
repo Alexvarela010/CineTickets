@@ -6,6 +6,7 @@ import {map, Observable} from 'rxjs';
 import {jwtDecode} from 'jwt-decode';
 import {enviroment} from '../../../../enviroments/enviroment';
 import {UsuariosService} from '../UserService/usuarios.service';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import {UsuariosService} from '../UserService/usuarios.service';
 export class AuthServiceService {
   private baseUrl: string = enviroment.apiUrl;
 
-  constructor(private httpClient: HttpClient, private userService:UsuariosService) {
+  constructor(private httpClient: HttpClient, private userService:UsuariosService,private router:Router) {
   }
 
   getToken(auth:AuthRequest):Observable<string>{
@@ -24,9 +25,12 @@ export class AuthServiceService {
         const decodedToken: any = jwtDecode(token);
         if (decodedToken.sub===enviroment.admin){
             localStorage.setItem('rol','admin');
+            console.log(localStorage)
+            this.router.navigate(['Admin/peliculas'])
         }else{
             this.userService.getIDUsuarios(decodedToken.sub)
             localStorage.setItem('rol','user');
+          this.router.navigate(['inicio'])
         }
         localStorage.setItem('token',token);
         localStorage.setItem('user',decodedToken.sub);
@@ -36,4 +40,5 @@ export class AuthServiceService {
       })
     );
   }
+
 }

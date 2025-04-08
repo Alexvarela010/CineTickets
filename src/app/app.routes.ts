@@ -14,22 +14,29 @@ import {FuncionesListComponent} from './admin/Gestion/Funciones/funciones-list/f
 import {adminGuard} from './core/guards/admin.guard';
 import {UsuarioListComponent} from './admin/Gestion/Usuarios/usuario-list/usuario-list.component';
 import {PeliculaDetailComponent} from './public/pelicula-detail/pelicula-detail.component';
+import {LayoutAdminComponent} from './layout/layout-admin/layout-admin.component';
+import {UserConfiguracionesComponent} from './public/user-configuraciones/user-configuraciones.component';
 
 export const routes: Routes = [
   {path:'registrarse', component: RegisterComponent},
   {path:'', component: LayoutComponent,children:[
-      {path:'', component:InicioComponent},
+      {path:'inicio', component:InicioComponent},
+      {path:'configuraciones', component:UserConfiguracionesComponent},
       {path:'peliculas-detail/:id', component:PeliculaDetailComponent},
-      {path: 'Admin/peliculas',canActivate:[adminGuard], component:PeliculasListComponent},
-      {path: 'Admin/peliculas/:modo/:id',canActivate:[adminGuard], component:PeliculasFormComponent},
-      {path: 'Admin/funciones/:modo/:id',canActivate:[adminGuard], component:FuncionesFormComponent},
-      {path: 'Admin/funciones/:modo',canActivate:[adminGuard], component:FuncionesFormComponent},
-      {path: 'Admin/funciones',canActivate:[adminGuard], component:FuncionesListComponent},
-      {path: 'Admin/pagos',canActivate:[adminGuard], component:PagosListComponent},
-      {path: 'Admin/compras',canActivate:[adminGuard], component:ComprasListComponent},
-      {path: 'Admin/peliculas/:modo',canActivate:[adminGuard], component:PeliculasFormComponent},
-      {path: 'Admin/usuarios',canActivate:[adminGuard], component:UsuarioListComponent},
+      {path:'usuario/pagos', component:PagosListComponent}
     ]},
+  {path:'Admin', component: LayoutAdminComponent,children:[
+      {path: 'peliculas',canActivate:[adminGuard], component:PeliculasListComponent},
+      {path: 'peliculas/:modo/:id',canActivate:[adminGuard], component:PeliculasFormComponent},
+      {path: 'funciones/:modo/:id',canActivate:[adminGuard], component:FuncionesFormComponent},
+      {path: 'funciones/:modo',canActivate:[adminGuard], component:FuncionesFormComponent},
+      {path: 'funciones',canActivate:[adminGuard], component:FuncionesListComponent},
+      {path: 'pagos',canActivate:[adminGuard], component:PagosListComponent},
+      {path: 'compras',canActivate:[adminGuard], component:ComprasListComponent},
+      {path: 'peliculas/:modo',canActivate:[adminGuard], component:PeliculasFormComponent},
+      {path: 'usuarios',canActivate:[adminGuard], component:UsuarioListComponent},
+    ]},
+
   {path:'**', component:  NotFoundComponent},
 
 ];

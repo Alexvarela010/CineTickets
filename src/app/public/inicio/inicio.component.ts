@@ -73,9 +73,7 @@ export default class InicioComponent implements OnInit {
     )
   }
 
-  logout() {
-    localStorage.removeItem('token');
-  }
+
 
 
 }

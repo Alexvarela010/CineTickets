@@ -4,6 +4,7 @@ import {UserInfo} from '../../core/models/UserInfo';
 import {UsuariosService} from '../../core/services/UserService/usuarios.service';
 import {Pelicula} from '../../core/models/pelicula';
 import Swal from 'sweetalert2';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +17,7 @@ import Swal from 'sweetalert2';
 export class RegisterComponent implements OnInit{
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private usuarioservie:UsuariosService) {}
+  constructor(private fb: FormBuilder, private usuarioservie:UsuariosService, private router:Router) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -40,7 +41,7 @@ export class RegisterComponent implements OnInit{
            'success'
          ).then((result)=>{
            if (result.isConfirmed){
-             this.volver();
+             this.volver()
            }
          })
 
@@ -49,6 +50,6 @@ export class RegisterComponent implements OnInit{
     }
   }
   volver(): void {
-    window.history.back();
+    this.router.navigate(['inicio'])
   }
 }

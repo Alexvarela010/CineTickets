@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {MatSidenavContainer, MatSidenavModule} from '@angular/material/sidenav';
 import {MediaMatcher} from '@angular/cdk/layout';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import {Router, RouterLink, RouterOutlet} from '@angular/router';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
@@ -11,7 +11,7 @@ import {FaIconComponent} from '@fortawesome/angular-fontawesome';
 import {faUser} from '@fortawesome/free-solid-svg-icons';
 import {FooterComponent} from './footer/footer.component';
 import {Menu} from 'primeng/menu';
-import {MenuItem,} from 'primeng/api';
+import {MenuItem, MenuItemCommandEvent,} from 'primeng/api';
 import {Ripple} from 'primeng/ripple';
 import {Drawer} from 'primeng/drawer';
 import {AuthRequest} from '../core/models/AuthRequest';
@@ -35,7 +35,7 @@ import emailjs from 'emailjs-com';
     MatSidenavContainer,
     MatIconModule, MatSidenavModule, MatButtonModule, MatToolbarModule, MatListModule,
     RouterOutlet, RouterOutlet, ReactiveFormsModule,
-    FormsModule, FaIconComponent, FooterComponent, Menu, Ripple, Drawer, Message, NgIf, RouterLink, Dialog, NgForOf
+    FormsModule, FaIconComponent, FooterComponent, Menu, Drawer, Message, NgIf, RouterLink, Dialog, NgForOf
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
@@ -48,10 +48,11 @@ export class LayoutComponent implements OnInit {
   error: boolean = false;
   email: string = '';
   password: string = '';
+  AuthForm: FormGroup;
   idpago: number = 0;
   carrito: Array<Compra> = []
   detalle: Array<Detallecompra> = []
-  AuthForm: FormGroup;
+
   pagoform: FormGroup;
   pago: Pagos = new Pagos();
   protected readonly isMobile = signal(true);
@@ -59,7 +60,7 @@ export class LayoutComponent implements OnInit {
   private readonly _mobileQuery: MediaQueryList;
   private readonly _mobileQueryListener: () => void;
 
-  constructor(private pagoService: PagoService, private compraService: CompraService, private carritoService: CarritoService, private formbuilder: FormBuilder, private authservice: AuthServiceService) {
+  constructor(private router:Router,private pagoService: PagoService, private compraService: CompraService, private carritoService: CarritoService, private formbuilder: FormBuilder, private authservice: AuthServiceService) {
     const media = inject(MediaMatcher);
     this._mobileQuery = media.matchMedia('(max-width: 600px)');
     this.isMobile.set(this._mobileQuery.matches);
@@ -74,7 +75,9 @@ export class LayoutComponent implements OnInit {
       'estadopago': ['Pendiente'],
     })
   }
-
+  configuraciones() {
+    this.router.navigate(['/configuraciones'])
+  }
   abrirmodal() {
     if (localStorage.getItem('rol') === 'user') {
       this.carrito = this.carritoService.getCompras();
@@ -187,38 +190,21 @@ export class LayoutComponent implements OnInit {
       {
         separator: true
       },
+
       {
-        label: 'Documents',
+        label: 'Perfil',
         items: [
           {
-            label: 'New',
-            icon: 'pi pi-plus',
-            shortcut: '⌘+N'
-          },
-          {
-            label: 'Search',
-            icon: 'pi pi-search',
-            shortcut: '⌘+S'
-          }
-        ]
-      },
-      {
-        label: 'Profile',
-        items: [
-          {
-            label: 'Settings',
+            label: 'Configuraciones',
             icon: 'pi pi-cog',
-            shortcut: '⌘+O'
-          },
-          {
-            label: 'Messages',
-            icon: 'pi pi-inbox',
-            badge: '2'
+            shortcut: '⌘+O',
+            command:()=> this.configuraciones()
           },
           {
             label: 'Logout',
             icon: 'pi pi-sign-out',
-            shortcut: '⌘+Q'
+            shortcut: '⌘+Q',
+            command:()=> this.logout()
           }
         ]
       },
@@ -226,6 +212,12 @@ export class LayoutComponent implements OnInit {
         separator: true
       }
     ];
+  }
+
+  logout() {
+    localStorage.clear()
+    console.log(localStorage)
+
   }
 
   protected readonly localStorage = localStorage;
