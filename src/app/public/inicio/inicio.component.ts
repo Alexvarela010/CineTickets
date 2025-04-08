@@ -1,28 +1,20 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {AsyncPipe, CommonModule} from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatAutocomplete, MatAutocompleteTrigger, MatOption} from '@angular/material/autocomplete';
-import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {map, Observable, startWith} from 'rxjs';
 import {Pelicula} from '../../core/models/pelicula';
-import {InicioService} from '../../core/services/InicioService/inicio.service';
-import {ref, uploadBytesResumable, getDownloadURL, Storage} from '@angular/fire/storage';
-import {Pagos} from '../../core/models/pagos';
 import {PeliculaService} from '../../core/services/PeliculaService/pelicula.service';
+import {AutoComplete, AutoCompleteCompleteEvent} from 'primeng/autocomplete';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-inicio',
   imports: [
-    AsyncPipe,
     FormsModule,
-    MatAutocomplete,
-    MatAutocompleteTrigger,
-    MatFormField,
-    MatInput,
-    MatLabel,
-    MatOption,
     ReactiveFormsModule,
     CommonModule,
+    AutoComplete,
+    RouterLink,
 
   ],
   templateUrl: './inicio.component.html',
@@ -31,10 +23,20 @@ import {PeliculaService} from '../../core/services/PeliculaService/pelicula.serv
 })
 export default class InicioComponent implements OnInit {
   peliculas: Array<Pelicula> = [];
-  pagos: Array<Pagos> = [];
 
-  constructor(private inicioService: InicioService, private peliculaservice:PeliculaService) {
+  constructor(private peliculaservice: PeliculaService, private router:Router) {
 
+  }
+
+  items: any[] = [];
+
+  value: any;
+
+  search(event: AutoCompleteCompleteEvent) {
+    const query = event.query.toLowerCase();
+    this.items = this.peliculas
+      .filter(pelicula => pelicula.titulo.toLowerCase().includes(query))
+      .map(pelicula => ({titulo: pelicula.titulo, id: pelicula.peliculaId}));
   }
 
   myControl = new FormControl('');
@@ -49,9 +51,16 @@ export default class InicioComponent implements OnInit {
     );
   }
 
+  onSelect(pelicula: any) {
+    console.log(pelicula[0])
+  }
+
+  Gotodetail(id:number) {
+    this.router.navigate(['/peliculas-detail/', id]);
+  }
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
@@ -68,15 +77,6 @@ export default class InicioComponent implements OnInit {
     localStorage.removeItem('token');
   }
 
-  getPagos() {
-    console.log(2)
-    this.inicioService.getpagos().subscribe(
-      (pagos: Array<Pagos>) => {
-        this.pagos = pagos;
-        console.log(this.pagos);
-      }
-    )
-  }
 
 }
 

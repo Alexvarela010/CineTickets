@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectorRef, Component, inject} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {DropdownModule} from 'primeng/dropdown';
 import {NgIf} from '@angular/common';
@@ -7,6 +7,7 @@ import {Pelicula} from '../../../../core/models/pelicula';
 import {PeliculaService} from '../../../../core/services/PeliculaService/pelicula.service';
 import Swal from 'sweetalert2';
 import {InputNumber} from 'primeng/inputnumber';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-peliculas-form',
@@ -28,12 +29,23 @@ export class PeliculasFormComponent {
   archivoCarrusel: any
   previewUrl: string | ArrayBuffer | null = null;
   previewUrl1: string | ArrayBuffer | null = null;
-
-  constructor(private fb: FormBuilder, private peliculaservice: PeliculaService) {
+  crearOrEditar = 'Crear';
+  peliculaId!: number;
+  constructor(private fb: FormBuilder, private peliculaservice: PeliculaService, private route: ActivatedRoute) {
   }
 
+
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const modo = params['modo'];
+      this.crearOrEditar = modo === 'editar' ? 'Editar' : 'Crear';
+      if (modo === 'editar') {
+        this.peliculaId = +params['id'];
+        this.cargarpelicula()
+      }
+    });
     this.peliculaForm = this.fb.group({
+      peliculaId: [],
       titulo: ['', Validators.required],
       descripcion: ['', Validators.required],
       categoria: ['', Validators.required],
@@ -44,9 +56,28 @@ export class PeliculasFormComponent {
       precioEntrada: ['', [Validators.required, Validators.min(1)]],
     });
   }
+  cargarpelicula(){
+    this.peliculaservice.getpelicula_x_id(this.peliculaId).subscribe(
+      pelicula=>{
+        this.peliculaForm.patchValue({
+          peliculaId:this.peliculaId,
+          titulo:pelicula.titulo,
+          descripcion:pelicula.descripcion,
+          categoria:pelicula.categoria,
+          duracion:pelicula.duracion,
+          estado:pelicula.estado,
+          imagen: pelicula.imagen,
+          imagenCarrusel:pelicula.imagenCarrusel,
+          precioEntrada:pelicula.precioEntrada
+        })
+      }
+    );
+
+  }
 
   onSubmit(): void {
-    if (this.peliculaForm.valid) {
+    console.log(this.crearOrEditar)
+    if (this.peliculaForm.valid && this.crearOrEditar==='Crear') {
       console.log(this.peliculaForm.value)
       this.peliculaservice.addPeliculas(this.peliculaForm.value).subscribe(
         (pelicula: Pelicula) => {
@@ -54,6 +85,22 @@ export class PeliculasFormComponent {
             'Pelicula creada',
             `${pelicula.titulo} ha sido creada con exito`,
             'success'
+          )
+        }
+      )
+    }else if(this.peliculaForm.valid){
+      console.log(this.peliculaForm.value, "edit")
+      this.peliculaservice.editPeliculas(this.peliculaForm.value).subscribe(
+        (pelicula: Pelicula) => {
+          Swal.fire(
+            'Pelicula editada',
+            `${pelicula.titulo} ha sido editada con exito`,
+            'success'
+          ).then((result) => {
+            if (result.isConfirmed) {
+              window.history.back();
+            }
+          }
           )
         }
       )

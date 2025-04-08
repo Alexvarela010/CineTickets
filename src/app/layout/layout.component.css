@@ -4,9 +4,12 @@
   top: 0;
   bottom: 0;
   left: 0;
+  min-height: 100vh;
   right: 0;
 }
 .example-toolbar {
+  background-color: black ;
+  color: white;
   position: fixed;
   top: 0;
   left: 0;
@@ -14,11 +17,22 @@
   z-index: 1000;
   justify-content: space-around;
   display: flex;
-  background-color: white;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+@media screen and (max-width: 700px) {
+  .boton-toolbar {
+    display: none;
+  }
+  .boton-user{
+    margin-left: auto;
+  }
+  .example-toolbar {
+    justify-content: normal;
+  }
+
+}
 .example-is-mobile .example-toolbar {
   position: fixed;
   z-index: 2;
@@ -36,6 +50,43 @@ h1.example-app-name {
 
   flex: 1 0 auto;
 }
+.form-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 1.5rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
 
+form h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.label-form {
+  display: block;
+  margin: 0.5rem 0 0.2rem;
+  font-weight: 500;
+}
+
+.input-form {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+.button-form {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #00ae04;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
 
 

@@ -3,14 +3,17 @@ import {HttpClient} from '@angular/common/http';
 import {Storage} from '@angular/fire/storage';
 import {AuthRequest} from '../../models/AuthRequest';
 import {map, Observable} from 'rxjs';
+import {jwtDecode} from 'jwt-decode';
+import {enviroment} from '../../../../enviroments/enviroment';
+import {UsuariosService} from '../UserService/usuarios.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthServiceService {
-  private baseUrl: string = "http://localhost:8080/CineTickets-Service";
+  private baseUrl: string = enviroment.apiUrl;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private userService:UsuariosService) {
   }
 
   getToken(auth:AuthRequest):Observable<string>{
@@ -18,8 +21,18 @@ export class AuthServiceService {
     responseType:'text'
     }).pipe(
       map(token=>{
+        const decodedToken: any = jwtDecode(token);
+        if (decodedToken.sub===enviroment.admin){
+            localStorage.setItem('rol','admin');
+        }else{
+            this.userService.getIDUsuarios(decodedToken.sub)
+            localStorage.setItem('rol','user');
+        }
         localStorage.setItem('token',token);
+        localStorage.setItem('user',decodedToken.sub);
+        localStorage.setItem('logged','true');
         return token;
+
       })
     );
   }

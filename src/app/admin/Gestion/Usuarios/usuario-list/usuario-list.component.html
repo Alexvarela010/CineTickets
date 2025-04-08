@@ -1,0 +1,152 @@
+<div class="card">
+  <p-table class="px-4 py-3 p-datatable-gridlines"
+           #dt2
+           [value]="usuarios"
+           [paginator]="true"
+           [rows]="7"
+           [globalFilterFields]="['id', 'name', 'email', 'roles', 'telefono']"
+           dataKey="id"
+           [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template #caption>
+      <div class="d-flex justify-content-between align-items-center ">
+        <!-- Input de búsqueda -->
+        <div class="input-group" style="max-width: 300px;">
+          <input
+            type="text"
+            pInputText
+            class="form-control"
+            (input)="onGlobalFilter($event, dt2)"
+            placeholder="Buscar usuario"
+          />
+          <span class="input-group-text"><i class="pi pi-search"></i></span>
+        </div>
+        <div>
+          <button (click)="showDialoginactivo()" class="btn btn-primary">Reactivar clientes</button>
+        </div>
+
+      </div>
+    </ng-template>
+
+    <ng-template  pTemplate="header">
+
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+        <th>email</th>
+        <th>Telefono</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-usuario>
+      <tr>
+        <td>{{ usuario.id }}</td>
+        <td>{{ usuario.name }}</td>
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.telefono }}</td>
+        <td>
+          <button (click)="showDialog(usuario.id)" class="btn btn-primary" style="margin-right: 5px"><i class="fa fa-eye text-white"></i></button>
+          <button (click)="eliminarUsuario(usuario)" class="btn btn-danger "  ><i class="fa fa-trash"  ></i></button>
+
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog  [(visible)]="visibleinactivo" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '75vw' }" [draggable]="false" [resizable]="true">
+    <p-table class="px-4 py-3 p-datatable-gridlines"
+             #dt2
+             [value]="usuariosinactivos"
+             [paginator]="true"
+             [rows]="7"
+             [globalFilterFields]="['id', 'name', 'email', 'roles', 'telefono']"
+             dataKey="id"
+             [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template #caption>
+        <div class="d-flex justify-content-between align-items-center ">
+          <!-- Input de búsqueda -->
+          <div class="input-group" style="max-width: 300px;">
+            <input
+              type="text"
+              pInputText
+              class="form-control"
+              (input)="onGlobalFilter($event, dt2)"
+              placeholder="Buscar usuario"
+            />
+            <span class="input-group-text"><i class="pi pi-search"></i></span>
+          </div>
+
+
+        </div>
+      </ng-template>
+
+      <ng-template  pTemplate="header">
+
+        <tr>
+          <th>Id</th>
+          <th>Nombre</th>
+          <th>email</th>
+          <th>Telefono</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-usuario1>
+        <tr>
+          <td>{{ usuario1.id }}</td>
+          <td>{{ usuario1.name }}</td>
+          <td>{{ usuario1.email }}</td>
+          <td>{{ usuario1.telefono }}</td>
+          <td>
+            <button (click)="activarUsuario(usuario1)" class="btn btn-success "  ><i class="fa fa-rotate-right"  ></i></button>
+
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-dialog>
+  <p-dialog  [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '75vw' }" [draggable]="false" [resizable]="true">
+    <div class="form-container">
+      <form [formGroup]="usuarioForm">
+        <h2>Detalles del usuario</h2>
+        <div class="row">
+          <div class="col-4">
+            <label class="label-form">Id:</label>
+            <input readonly class="input-form " type="text" formControlName="id"/>
+          </div>
+
+          <div class="col-4">
+            <label class="label-form">Nombre:</label>
+            <textarea readonly class="input-form" formControlName="name"></textarea>
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">Email:</label>
+            <textarea readonly class="input-form" formControlName="email"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <label class="label-form">Telefono:</label>
+            <input readonly class="input-form" type="text" formControlName="telefono"/>
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">estado:</label>
+            <input readonly class="input-form" type="text" formControlName="estado"/>
+
+          </div>
+          <div class="col-4">
+            <label class="label-form">Rol:</label>
+            <input readonly class="input-form" type="text" formControlName="roles"/>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+  </p-dialog>
+</div>

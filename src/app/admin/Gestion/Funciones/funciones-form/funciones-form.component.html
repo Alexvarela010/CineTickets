@@ -1,0 +1,46 @@
+<div class="form-container">
+  <form [formGroup]="funcionForm" (ngSubmit)="onSubmit()">
+    <h2>{{crearOrEditar}} función</h2>
+    <div class="row">
+      <div class="col-4">
+
+        <label class="label-form">Disponibilidad:</label>
+        <input class="input-form" type="number" formControlName="disponibilidad"/>
+      </div>
+      <div class="col-4">
+        <label class="label-form">Fecha:</label>
+        <mat-form-field class="example-full-width">
+          <mat-label>Choose a date</mat-label>
+          <input formControlName="fecha" matInput [matDatepicker]="picker">
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-4">
+
+        <label class="label-form">Hora:</label>
+        <mat-form-field>
+          <mat-label>Selecciona la hora</mat-label>
+          <input matInput formControlName="hora" [matTimepicker]="picker2">
+          <mat-timepicker-toggle matIconSuffix [for]="picker2"/>
+          <mat-timepicker #picker2/>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+
+        <label class="label-form">Sala:</label>
+        <input class="input-form" type="text" formControlName="sala"/>
+      </div>
+
+      <div class="col-8">
+        <label class="label-form">Seleccionar peliculas:</label>
+        <form [formGroup]="formGroup" class="card flex justify-center">
+          <p-multiSelect [options]="peliculas" formControlName="selectedPeliculas" optionLabel="titulo" placeholder="Seleccionar peliculas" [maxSelectedLabels]="10" styleClass="w-full md:w-80" />
+        </form>
+      </div>
+    </div>
+    <button  type="submit" [disabled]="funcionForm.invalid" >{{ crearOrEditar }} función</button>
+  </form>
+</div>

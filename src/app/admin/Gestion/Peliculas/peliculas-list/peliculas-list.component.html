@@ -3,14 +3,14 @@
            #dt2
            [value]="peliculas"
            [paginator]="true"
-           [rows]="10"
+           [rows]="7"
            [globalFilterFields]="['titulo', 'descripcion', 'categoria', 'precioEntrada']"
            dataKey="peliculaId"
            [tableStyle]="{ 'min-width': '50rem' }"
   >
     <ng-template #caption>
       <div class="d-flex justify-content-between align-items-center ">
-        <button routerLink="/Admin/peliculas/crear" class="btn btn-success">
+        <button  (click)="goToPeliculasformcrear()" class="btn btn-success">
           Crear Película
         </button>
         <!-- Input de búsqueda -->
@@ -50,12 +50,70 @@
         <td>{{ pelicula.estado }}</td>
         <td>{{ pelicula.precioEntrada }}</td>
         <td>
-          <button class="btn btn-success" style="margin-right: 5px"><i class="fa fa-eye text-white"></i></button>
-          <button class="btn btn-primary" style="margin-right: 5px"><i class="fa fa-pencil "></i></button>
-          <button class="btn btn-danger "  ><i class="fa fa-trash"  ></i></button>
-
+          <button (click)="showDialog(pelicula.peliculaId)" class="btn btn-primary" style="margin-right: 5px"><i class="fa fa-eye text-white"></i></button>
+          <button (click)="goToPeliculasform( pelicula.peliculaId)" class="btn" style="margin-right: 5px;background-color: #ffa100;color: white"><i class="fa fa-pencil "></i></button>
+          <button (click)="eliminarpelicula(pelicula)" class="btn btn-danger "  ><i class="fa fa-trash"  ></i></button>
         </td>
       </tr>
     </ng-template>
   </p-table>
+  <p-dialog  [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '75vw' }" [draggable]="false" [resizable]="true">
+    <div class="form-container">
+      <form [formGroup]="peliculaForm">
+        <h2>Detalles de la pelicula</h2>
+        <div class="row">
+          <div class="col-4">
+            <label class="label-form">Título:</label>
+            <input readonly class="input-form " type="text" formControlName="titulo"/>
+          </div>
+
+          <div class="col-4">
+            <label class="label-form">Descripción:</label>
+            <textarea readonly class="input-form" formControlName="descripcion"></textarea>
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">Categoria:</label>
+            <textarea readonly class="input-form" formControlName="categoria"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+
+            <label class="label-form">Duración:</label>
+            <input readonly class="input-form" type="text" formControlName="duracion"/>
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">estado:</label>
+            <input readonly class="input-form" type="text" formControlName="estado"/>
+
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">Precio de entrada:</label>
+            <p-inputnumber readonly class="input-form" mode="currency" currency="USD" locale="en-US" inputId="integeronly"
+                           formControlName="precioEntrada"></p-inputnumber>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <label class="label-form">imagen de las tarjetas:</label>
+
+            <img [src]="peliculaForm.get('imagen')?.value" alt="Preview" style="max-width: 300px; margin-top: 10px;">
+
+          </div>
+          <div class="col-6">
+            <label class="label-form">imagen del carrusel:</label>
+            <img [src]="peliculaForm.get('imagenCarrusel')?.value" alt="Preview" style="max-width: 300px; margin-top: 10px;">
+
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+
+
+  </p-dialog>
 </div>

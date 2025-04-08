@@ -1,62 +1,155 @@
- <div class="example-container" [class.example-is-mobile]="isMobile()">
-    <mat-toolbar class="example-toolbar">
-      <div class=" flex justify-content-center">
-        <p-menu #menu [popup]="true" [model]="items" styleClass="w-full md:w-15rem"></p-menu>
+<div class="example-container" [class.example-is-mobile]="isMobile()">
+  <mat-toolbar class="example-toolbar">
+    <div class=" flex justify-content-center">
+      <p-menu #menu [popup]="true" [model]="items" styleClass="w-full md:w-15rem"></p-menu>
+    </div>
+    <button class="text-white" mat-icon-button (click)="visible = true">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <button class="text-white" mat-icon-button (click)="abrirmodal()">
+      <mat-icon>shopping_cart_checkout</mat-icon>
+    </button>
+    <a class="btn-link" style="text-decoration: none;  color: white;" routerLink="/inicio"><h1
+      class="btn-title example-app-name">CineTickets</h1></a>
+    <button mat-button mat-stroked-button class="btn btn-toolbar boton-toolbar text-white">Cartelera</button>
+    <button mat-button mat-stroked-button class="btn boton-toolbar text-white">Estrenos</button>
+    <button mat-button mat-stroked-button class="btn boton-toolbar text-white">Mejor valoradas</button>
+    <button class="btn boton-user text-white" (click)="visiblelogin=true" mat-button>
+      <fa-icon style="" [icon]="faUser"></fa-icon>
+    </button>
+  </mat-toolbar>
+  <p-drawer [(visible)]="visible" header="Drawer">
+    <button pRipple
+            class="flex form-control items-center cursor-pointer p-4 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
+      <i class="pi pi-home mr-2"></i>
+      <span class="font-medium">Dashboard</span>
+    </button>
+  </p-drawer>
+  <p-drawer [(visible)]="visiblelogin" position="right">
+    <div class="align-items-center justify-content-center align-content-center">
+      <img class="text-center w-100 h-25 rounded"
+           src="https://firebasestorage.googleapis.com/v0/b/cinetickets-f28c2.firebasestorage.app/o/logo%2FCineTicketsLogo.png?alt=media&token=83759bdb-d2f0-42d2-86a3-db2668a9327e">
+      <form [formGroup]="AuthForm" (ngSubmit)="login(AuthForm.value)" class="w-100" style="padding-top: 15px">
+        <h2 class="text-center mb-2">Iniciar sesión</h2>
+        <div class="mb-2">
+          <label>Email</label>
+          <input type="text" class="form-control" formControlName="username" name="email">
+        </div>
+        <div class="mb-2">
+          <label>Contraseña</label>
+          <input type="password" class="form-control" formControlName="password" name="password">
+        </div>
+        <button [disabled]="AuthForm.invalid" class="btn btn-primary w-100"
+                style="margin-top: 5px; margin-bottom: 10px; background-color: #002de8">Iniciar sesión
+        </button>
+        <div *ngIf="error">
+          <p-message severity="error" icon="pi pi-times-circle" styleClass="mb-2">Usuario o contraseña incorrectos
+          </p-message>
+        </div>
+        <button routerLink="/registrarse"
+                class="w-100 btn-outline-secondary btn align-content-center align-items-center justify-content-center"
+                style="margin-top: 10px">
+          <span>Registrate aquí</span>
+        </button>
+      </form>
+    </div>
+  </p-drawer>
+  <mat-sidenav-container class="example-sidenav-container"
+                         [style.marginTop.px]="isMobile() ? 56 : 0">
+
+    <mat-sidenav-content style="padding-top: 64px; min-height: 100vh">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <app-footer></app-footer>
+
+</div>
+
+<p-dialog [(visible)]="visiblecar" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+          [style]="{ width: '50vw' }" [draggable]="false" [resizable]="true">
+  <h2 class="text-center mb-3">Carrito de Compras</h2>
+  <div *ngIf="carrito.length === 0" class="text-center text-muted">
+    <p>Tu carrito está vacío</p>
+  </div>
+  <div *ngIf="carrito.length > 0">
+    <div *ngFor="let item of carrito;let i=index" class="card mb-3 shadow-sm">
+      <div class="row g-0">
+        <div class="col-md-4 m-auto">
+          <img [src]="item.pelicula.imagen" class="img-fluid rounded-start m-auto" alt="..."/>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.pelicula.titulo }}</h5>
+            <p class="card-text mb-1"><strong>Fecha:</strong> {{ item.fechaCompra }}</p>
+            <p class="card-text mb-1"><strong>Horario:</strong> {{ detalle[i].funcion.hora }}</p>
+            <p class="card-text mb-1"><strong>Tickets:</strong> {{ item.cantidadTickets }}</p>
+            <p class="card-text mb-2"><strong>Total:</strong> ${{ item.precioTotal }}</p>
+            <button class="btn btn-sm btn-danger" (click)="eliminarDelCarrito(i)">
+              <i class="fa fa-trash"></i> Quitar
+            </button>
+          </div>
+        </div>
       </div>
-      <button mat-icon-button (click)="visible = true">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <h1 class="example-app-name">CineTickets</h1>
-      <button mat-stroked-button>Cartelera</button>
-      <button mat-stroked-button>Estrenos</button>
-      <button mat-stroked-button>Mejor valoradas</button>
-      <button (click)="visiblelogin=true"   mat-button >
-        <fa-icon style="" [icon]="faUser"></fa-icon>
-      </button>
-    </mat-toolbar>
-   <p-drawer [(visible)]="visible" header="Drawer">
-     <button pRipple class="flex form-control items-center cursor-pointer p-4 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
-       <i class="pi pi-home mr-2"></i>
-       <span class="font-medium">Dashboard</span>
-     </button>
-   </p-drawer>
-   <p-drawer [(visible)]="visiblelogin" position="right">
-     <div class="align-items-center justify-content-center align-content-center">
-       <img class="text-center w-100 h-25 rounded" src="https://firebasestorage.googleapis.com/v0/b/cinetickets-f28c2.firebasestorage.app/o/logo%2FCineTicketsLogo.png?alt=media&token=83759bdb-d2f0-42d2-86a3-db2668a9327e">
-       <form [formGroup]="AuthForm" (ngSubmit)="login(AuthForm.value)"  class="w-100" style="padding-top: 15px">
-         <h2 class="text-center mb-2" >Iniciar sesión</h2>
-         <div class="mb-2">
-           <label>Email</label>
-           <input type="text" class="form-control" formControlName="username" name="email">
-         </div>
-         <div class="mb-2">
-           <label>Contraseña</label>
-           <input type="password" class="form-control" formControlName="password" name="password">
-         </div>
-         <button [disabled]="AuthForm.invalid"  class="btn btn-primary w-100" style="margin-top: 5px; margin-bottom: 10px">Iniciar sesión</button>
-         <div *ngIf="error">
-           <p-message  severity="error" icon="pi pi-times-circle" styleClass="mb-2">Usuario o contraseña incorrectos</p-message>
-         </div>
-         <button class="w-100 btn-outline-secondary btn align-content-center align-items-center justify-content-center" style="margin-top: 10px">
-           <span>Registrate aquí</span>
-         </button>
-       </form>
-     </div>
-   </p-drawer>
-    <mat-sidenav-container class="example-sidenav-container"
-                           [style.marginTop.px]="isMobile() ? 56 : 0">
+    </div>
 
-      <mat-sidenav-content style="padding-top: 64px">
-        <router-outlet></router-outlet>
+    <hr/>
+    <div class="d-flex justify-content-between align-items-center">
+      <h4>Total a pagar:</h4>
+      <h4 class="text-success">${{ obtenerTotal() }}</h4>
+    </div>
 
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-   <app-footer></app-footer>
-
+    <div class="d-flex justify-content-end mt-3">
+      <button class="btn btn-success" (click)="abrirpago()">Confirmar Compra</button>
+    </div>
   </div>
 
 
+</p-dialog>
 
-<!-- Copyright 2025 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at https://angular.io/license -->
+<p-dialog header="Pago" [(visible)]="visiblepago" [modal]="true"
+          [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+          [style]="{ width: '60vw' }"
+          [draggable]="false" [resizable]="true">
+
+  <div class="form-container">
+    <form [formGroup]="pagoform " (ngSubmit)="confirmarCompra()">
+      <h2>Confirmación de pago</h2>
+      <div class="row">
+        <div class="col-4">
+          <label class="label-form">Método de pago:</label>
+          <select class="form-select" id="inputGroupSelect01" formControlName="metodopago">
+            <option selected value="PSE">PSE</option>
+            <option value="Tarjeta">Tarjeta de crédito o débito</option>
+          </select>
+        </div>
+
+        <div *ngIf="pagoform.get('metodopago')?.value === 'PSE'" class="col-4">
+          <label class="label-form">Número de cuenta:</label>
+          <input class="input-form form-control" type="text"/>
+        </div>
+
+        <div *ngIf="pagoform.get('metodopago')?.value === 'Tarjeta'" class="col-12">
+          <div class="row">
+            <div class="col-4">
+              <label class="label-form">Número de tarjeta:</label>
+              <input class="input-form form-control" type="text"/>
+            </div>
+            <div class="col-4">
+              <label class="label-form">Fecha de vencimiento:</label>
+              <input class="input-form form-control" type="text" placeholder="MM/AA"/>
+            </div>
+            <div class="col-4">
+              <label class="label-form">Código de seguridad (CVV):</label>
+              <input class="input-form form-control" type="text"/>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+      <button class="button-form" style="margin-top: 20px" type="submit" [disabled]="pagoform.invalid">Pagar</button>
+
+    </form>
+  </div>
+</p-dialog>

@@ -1,0 +1,51 @@
+
+<div [style.background-image]="'url(' + peliculaForm.get('imagenCarrusel')?.value + ')'" class=" container-fluid hero d-flex flex-wrap justify-content-center align-items-center">
+  <div class="col-md-3 text-center mb-3 mb-md-0">
+    <img src="{{peliculaForm.get('imagen')?.value}}" class="img-fluid" alt="Poster Película">
+  </div>
+  <div class="m-5 col-md-7 text-white info-bg p-3">
+    <h1>{{ peliculaForm.get('titulo')?.value }}</h1>
+    <p><em>Categoria:</em> {{ peliculaForm.get('categoria')?.value }}</p>
+    <p><em>Estado:</em> {{ peliculaForm.get('estado')?.value }}</p>
+    <p><em>Precio:</em> {{ peliculaForm.get('precioEntrada')?.value }} </p>
+    <div class="mb-3">
+      <span class="tag bg-light text-dark">Recomendada</span>
+      <span class="tag bg-light text-dark">{{ peliculaForm.get('duracion')?.value }}</span>
+    </div>
+    <p>{{ peliculaForm.get('descripcion')?.value }}</p>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <h1 class="text-primary mb-3">Funciones disponibles</h1>
+
+  <div class="d-flex flex-wrap gap-3">
+    <button (click)="mostrarDialog(funciones)" *ngFor="let funciones of funciones; let i=index" class="btn btn-outline-primary fecha-btn object-fit-xl-contain">Fecha: {{ fechanormal[i] }} <br><small>Hora: {{horanormal[i]}}</small></button>
+  </div>
+  <p-dialog  [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '75vw' }" [draggable]="false" [resizable]="true">
+    <div class="text-center mb-3">
+      <img [src]="peliculaForm.get('imagen')?.value" alt="Poster" class="img-fluid rounded" style="height: 200px;">
+      <h3 class="mt-2">{{ peliculaForm.get('titulo')?.value }}</h3>
+    </div>
+
+    <form [formGroup]="compraForm" (ngSubmit)="comprarTickets()">
+
+
+      <div class="mb-3">
+        <label>Cantidad de tickets:</label>
+        <input type="number" class="form-control" formControlName="cantidad" min="1" >
+      </div>
+
+      <div class="mb-3">
+        <strong>Precio Total:</strong> {{ calcularTotal() | currency:'COP' }}
+      </div>
+
+      <button type="submit" [disabled]="compraForm.invalid" class="btn btn-success w-100">
+        Confirmar Compra
+      </button>
+    </form>
+
+  </p-dialog>
+
+
+</div>

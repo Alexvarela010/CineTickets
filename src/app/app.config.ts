@@ -6,6 +6,7 @@ import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {getStorage, provideStorage} from '@angular/fire/storage';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeng/themes/aura';
+import {provideNativeDateAdapter} from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,8 @@ export const appConfig: ApplicationConfig = {
       theme:{
         preset:Aura
       }
-    })
+    }),
+    provideNativeDateAdapter()
   ]
 
 };

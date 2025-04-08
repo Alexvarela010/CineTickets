@@ -1,0 +1,102 @@
+<div class="card">
+  <p-table class="px-4 py-3 p-datatable-gridlines"
+           #dt2
+           [value]="funciones"
+           [paginator]="true"
+           [rows]="7"
+           [globalFilterFields]="['id', 'sala', 'disponibilidad', 'fecha']"
+           dataKey="id"
+           [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template #caption>
+      <div class="d-flex justify-content-between align-items-center ">
+        <button (click)="goToFuncionesformcrear()" class="btn btn-success">
+          Crear función
+        </button>
+        <!-- Input de búsqueda -->
+        <div class="input-group" style="max-width: 300px;">
+          <input
+            type="text"
+            pInputText
+            class="form-control"
+            (input)="onGlobalFilter($event, dt2)"
+            placeholder="Buscar funcion"
+          />
+          <span class="input-group-text"><i class="pi pi-search"></i></span>
+        </div>
+
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+
+      <tr>
+        <th>Id</th>
+        <th>Pelicula</th>
+        <th>Fecha</th>
+        <th>sala</th>
+        <th>Hora</th>
+        <th>Disponibilidad</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-funcion>
+      <tr>
+        <td>{{ funcion.id }}</td>
+        <td>{{ funcion.pelicula.titulo }}</td>
+        <td>{{ funcion.fecha }}</td>
+        <td>{{ funcion.sala }}</td>
+        <td>{{ funcion.hora }}</td>
+        <td>{{ funcion.disponibilidad }}</td>
+        <td>
+          <button (click)="showDialog(funcion.id)" class="btn btn-primary" style="margin-right: 5px"><i
+            class="fa fa-eye text-white"></i></button>
+          <button (click)="goToFuncionesform( funcion.id)" class="btn"
+                  style="margin-right: 5px;background-color: #ffa100;color: white"><i class="fa fa-pencil "></i>
+          </button>
+          <button (click)="eliminarfuncion(funcion)" class="btn btn-danger "><i class="fa fa-trash"></i></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+            [style]="{ width: '75vw' }" [draggable]="false" [resizable]="true">
+    <div class="form-container">
+      <form [formGroup]="funcionesform">
+        <h2>Detalles de la función</h2>
+        <div class="row">
+          <div class="col-4">
+            <label class="label-form">Pelicula:</label>
+            <input readonly class="input-form " type="text" formControlName="pelicula"/>
+          </div>
+
+          <div class="col-4">
+            <label class="label-form">Fecha:</label>
+            <input readonly class="input-form" formControlName="fecha">
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">Hora:</label>
+            <input readonly class="input-form" formControlName="hora">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+
+            <label class="label-form">Sala:</label>
+            <input readonly class="input-form" type="text" formControlName="sala"/>
+          </div>
+          <div class="col-6">
+
+            <label class="label-form">Disponibilidad:</label>
+            <input readonly class="input-form" type="text" formControlName="disponibilidad"/>
+
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </p-dialog>
+</div>

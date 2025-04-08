@@ -1,0 +1,95 @@
+<div class="card">
+  <p-table class="px-4 py-3 p-datatable-gridlines"
+           #dt2
+           [value]="pagos"
+           [paginator]="true"
+           [rows]="7"
+           [globalFilterFields]="['id', 'metodopago', 'estadopago']"
+           dataKey="id"
+           [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template #caption>
+      <div class="d-flex justify-content-between align-items-center ">
+        <div class="input-group" style="max-width: 300px;">
+          <input
+            type="text"
+            pInputText
+            class="form-control"
+            (input)="onGlobalFilter($event, dt2)"
+            placeholder="Buscar pago"
+          />
+          <span class="input-group-text"><i class="pi pi-search"></i></span>
+        </div>
+
+      </div>
+    </ng-template>
+
+    <ng-template  pTemplate="header">
+
+      <tr>
+        <th>Id</th>
+        <th>Estado del pago</th>
+        <th>Metodo de pago</th>
+        <th>Id compra</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-pago>
+      <tr>
+        <td>{{ pago.id }}</td>
+        <td>{{ pago.estadopago }}</td>
+        <td>{{ pago.metodopago }}</td>
+        <td>{{ pago.compra.compraId }}</td>
+        <td>
+          <button (click)="showDialog(pago.id)" class="btn btn-primary" style="margin-right: 5px"><i class="fa fa-eye text-white"></i></button>
+      </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog  [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '75vw' }" [draggable]="false" [resizable]="true">
+    <div class="form-container">
+      <form [formGroup]="pagoForm">
+        <h2>Detalles del pago</h2>
+        <div class="row">
+          <div class="col-4">
+            <label class="label-form">Id:</label>
+            <input readonly class="input-form " type="text" formControlName="id"/>
+          </div>
+
+          <div class="col-4">
+
+            <label class="label-form">Estado del pago:</label>
+            <textarea readonly class="input-form" formControlName="estadopago"></textarea>
+          </div>
+          <div class="col-4">
+            <label class="label-form">Precio total:</label>
+            <p-inputnumber readonly class="input-form" mode="currency" currency="USD" locale="en-US" inputId="integeronly"
+                           formControlName="precio"></p-inputnumber>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+
+            <label class="label-form">Cliente:</label>
+            <input readonly class="input-form" type="text" formControlName="cliente"/>
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">Metodo de pago:</label>
+            <input readonly class="input-form" type="text" formControlName="metodopago"/>
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">Id de la compra:</label>
+            <input readonly class="input-form" type="text" formControlName="compra"/>
+
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+  </p-dialog>
+</div>

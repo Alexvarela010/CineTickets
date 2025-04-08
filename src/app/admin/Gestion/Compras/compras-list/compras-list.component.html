@@ -1,0 +1,101 @@
+<div class="card">
+  <p-table class="px-4 py-3 p-datatable-gridlines"
+           #dt2
+           [value]="compras"
+           [paginator]="true"
+           [rows]="7"
+           [globalFilterFields]="['compraId', 'userInfo', 'pelicula']"
+           dataKey="compraId"
+           [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template #caption>
+      <div class="d-flex justify-content-between align-items-center ">
+        <div class="input-group" style="max-width: 300px;">
+          <input
+            type="text"
+            pInputText
+            class="form-control"
+            (input)="onGlobalFilter($event, dt2)"
+            placeholder="Buscar compra"
+          />
+          <span class="input-group-text"><i class="pi pi-search"></i></span>
+        </div>
+
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+
+      <tr>
+        <th>Id</th>
+        <th>Pelicula</th>
+        <th>Cliente</th>
+        <th>Precio total</th>
+        <th>Cantidad de tickets</th>
+        <th>Fecha de compra</th>
+        <th>Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-compra>
+      <tr>
+        <td>{{ compra.compraId }}</td>
+        <td>{{ compra.pelicula.titulo }}</td>
+        <td>{{ compra.userInfo.name }}</td>
+        <td>{{ compra.precioTotal }}</td>
+        <td>{{ compra.cantidadTickets }}</td>
+        <td>{{ compra.fechaCompra }}</td>
+        <td>
+          <button (click)="showDialog(compra.compraId)" class="btn btn-primary" style="margin-right: 5px"><i
+            class="fa fa-eye text-white"></i></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-dialog [(visible)]="visible" [modal]="true" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+            [style]="{ width: '75vw' }" [draggable]="false" [resizable]="true">
+    <div class="form-container">
+      <form [formGroup]="comprasForm">
+        <h2>Detalles de la compra</h2>
+        <div class="row">
+          <div class="col-4">
+            <label class="label-form">Id:</label>
+            <input readonly class="input-form " type="text" formControlName="compraId"/>
+          </div>
+
+          <div class="col-4">
+
+            <label class="label-form">Pelicula:</label>
+            <textarea readonly class="input-form" formControlName="pelicula"></textarea>
+          </div>
+          <div class="col-4">
+            <label class="label-form">Cliente:</label>
+            <textarea readonly class="input-form" formControlName="userInfo"></textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <label class="label-form">Precio total:</label>
+            <p-inputnumber readonly class="input-form" mode="currency" currency="USD" locale="en-US"
+                           inputId="integeronly"
+                           formControlName="precioTotal"></p-inputnumber>
+          </div>
+          <div class="col-4">
+            <label class="label-form">Id de la compra:</label>
+            <input readonly class="input-form" type="text" formControlName="cantidadTickets"/>
+
+          </div>
+          <div class="col-4">
+
+            <label class="label-form">Fecha de compra:</label>
+            <input readonly class="input-form" type="text" formControlName="fechaCompra"/>
+
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+  </p-dialog>
+</div>

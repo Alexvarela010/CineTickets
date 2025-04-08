@@ -10,6 +10,7 @@ import {getAnalytics} from '@angular/fire/analytics';
 import {providePrimeNG} from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {provideNativeDateAdapter} from '@angular/material/core';
 
 bootstrapApplication(AppComponent, {
   providers: [provideRouter(routes),
@@ -26,7 +27,9 @@ bootstrapApplication(AppComponent, {
           cssLayer: false
         }
       }
-    })]
+    }),
+    provideNativeDateAdapter()
+  ]
 })
 const firebaseConfig = {
   apiKey: "AIzaSyCPOLbbJvhQTH5-WvPqw7ewN2z3lFN2Lxc",
