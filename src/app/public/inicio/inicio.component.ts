@@ -51,13 +51,13 @@ export default class InicioComponent implements OnInit {
     );
   }
 
-  onSelect(pelicula: any) {
-    console.log(pelicula[0])
+  onSelect(event: any) {
+    const pelicula = event;
+    this.router.navigate(['/peliculas-detail', pelicula.value.id]);
   }
 
-  Gotodetail(id:number) {
-    this.router.navigate(['/peliculas-detail/', id]);
-  }
+
+
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();

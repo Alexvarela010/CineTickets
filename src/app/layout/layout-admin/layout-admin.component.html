@@ -1,0 +1,57 @@
+<div class="example-container" [class.example-is-mobile]="isMobile()">
+  <mat-toolbar class="example-toolbar">
+    <div class=" flex justify-content-center">
+      <p-menu #menu [popup]="true" [model]="items" styleClass="w-full md:w-15rem"></p-menu>
+    </div>
+    <a class="btn-link" style="text-decoration: none;  color: white;" routerLink="/inicio"><h1
+      class="btn-title example-app-name">CineTickets</h1></a>
+    <button routerLink="/Admin/peliculas" mat-button mat-stroked-button class="btn btn-toolbar boton-toolbar text-white">Peliculas</button>
+    <button routerLink="/Admin/usuarios" mat-button mat-stroked-button class="btn btn-toolbar boton-toolbar text-white">Usuarios</button>
+    <button routerLink="/Admin/pagos" mat-button mat-stroked-button class="btn boton-toolbar text-white">Pagos</button>
+    <button routerLink="/Admin/funciones" mat-button mat-stroked-button class="btn boton-toolbar text-white">Funciones</button>
+    <button routerLink="/Admin/compras" mat-button mat-stroked-button class="btn boton-toolbar text-white">Compras</button>
+    <button *ngIf="localStorage.getItem('logged')==='true'" class="btn boton-user text-white" (click)="menu.toggle($event)" mat-button>
+      <fa-icon style="" [icon]="faUser"></fa-icon>
+    </button>
+    <button *ngIf="localStorage.getItem('logged')==='false'|| localStorage.length===0" class="btn boton-user text-white" (click)="visiblelogin=true" mat-button>
+      <fa-icon style="" [icon]="faUser"></fa-icon>
+    </button>
+  </mat-toolbar>
+  <mat-sidenav-container class="example-sidenav-container"
+                         [style.marginTop.px]="isMobile() ? 56 : 0">
+
+    <mat-sidenav-content style="padding-top: 64px; min-height: 100vh">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <app-footer></app-footer>
+</div>
+<p-drawer [(visible)]="visiblelogin" position="right">
+  <div class="align-items-center justify-content-center align-content-center">
+    <img class="text-center w-100 h-25 rounded"
+         src="https://firebasestorage.googleapis.com/v0/b/cinetickets-f28c2.firebasestorage.app/o/logo%2FCineTicketsLogo.png?alt=media&token=83759bdb-d2f0-42d2-86a3-db2668a9327e">
+    <form [formGroup]="AuthForm" (ngSubmit)="login(AuthForm.value)" class="w-100" style="padding-top: 15px">
+      <h2 class="text-center mb-2">Iniciar sesión</h2>
+      <div class="mb-2">
+        <label>Email</label>
+        <input type="text" class="form-control" formControlName="username" name="email">
+      </div>
+      <div class="mb-2">
+        <label>Contraseña</label>
+        <input type="password" class="form-control" formControlName="password" name="password">
+      </div>
+      <button [disabled]="AuthForm.invalid" class="btn btn-primary w-100"
+              style="margin-top: 5px; margin-bottom: 10px; background-color: #002de8">Iniciar sesión
+      </button>
+      <div *ngIf="error">
+        <p-message severity="error" icon="pi pi-times-circle" styleClass="mb-2">Usuario o contraseña incorrectos
+        </p-message>
+      </div>
+      <button routerLink="/registrarse"
+              class="w-100 btn-outline-secondary btn align-content-center align-items-center justify-content-center"
+              style="margin-top: 10px">
+        <span>Registrate aquí</span>
+      </button>
+    </form>
+  </div>
+</p-drawer>

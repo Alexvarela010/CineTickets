@@ -78,14 +78,17 @@ export class PeliculasFormComponent {
   onSubmit(): void {
     console.log(this.crearOrEditar)
     if (this.peliculaForm.valid && this.crearOrEditar==='Crear') {
-      console.log(this.peliculaForm.value)
       this.peliculaservice.addPeliculas(this.peliculaForm.value).subscribe(
         (pelicula: Pelicula) => {
           Swal.fire(
             'Pelicula creada',
             `${pelicula.titulo} ha sido creada con exito`,
             'success'
-          )
+          ).then(result =>{
+            if (result.isConfirmed) {
+              window.history.back();
+            }
+          })
         }
       )
     }else if(this.peliculaForm.valid){
@@ -142,8 +145,8 @@ export class PeliculasFormComponent {
     if (this.archivo.files && this.archivoCarrusel.files) {
       this.imgtarjeta = this.archivo.files[0]
       this.imgCarrusel = this.archivoCarrusel.files[0]
-      const filepath = `peliculas/tarjetas${this.imgtarjeta.name}`;
-      const filepath1 = `peliculas/carrusel${this.imgCarrusel.name}`;
+      const filepath = `peliculas${this.imgtarjeta.name}`;
+      const filepath1 = `peliculas${this.imgCarrusel.name}`;
       const fileRef = ref(this.storage, filepath)
       const fileRef1 = ref(this.storage, filepath1)
       const uploadfile = uploadBytesResumable(fileRef, this.imgtarjeta)

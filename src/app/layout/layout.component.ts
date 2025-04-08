@@ -112,6 +112,7 @@ export class LayoutComponent implements OnInit {
         order_id: this.idpago,
         cost: this.obtenerTotal(),
         total: this.obtenerTotal(),
+        estado: this.pago.estadopago,
         logo: 'https://firebasestorage.googleapis.com/v0/b/cinetickets-f28c2.firebasestorage.app/o/logo%2FCineTicketsLogo.png?alt=media&token=83759bdb-d2f0-42d2-86a3-db2668a9327e',
         email: localStorage.getItem('user'),
       },
@@ -119,7 +120,6 @@ export class LayoutComponent implements OnInit {
     ).then(
       (response) => {
         console.log('Correo enviado', response);
-        alert('¡Correo enviado con éxito!');
       },
       (error) => {
         console.error('Error al enviar correo', error);
@@ -216,7 +216,16 @@ export class LayoutComponent implements OnInit {
 
   logout() {
     localStorage.clear()
-    console.log(localStorage)
+    Swal.fire({
+        title: "Sesión cerrada",
+        text: "Esperamos verte pronto",
+        icon: "success"
+      }
+    ).then((result)=>{
+      if (result.isConfirmed) {
+        this.router.navigate(['inicio'])
+      }
+    })
 
   }
 

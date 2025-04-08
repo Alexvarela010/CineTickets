@@ -21,6 +21,7 @@ export const routes: Routes = [
   {path:'registrarse', component: RegisterComponent},
   {path:'', component: LayoutComponent,children:[
       {path:'inicio', component:InicioComponent},
+      {path:'', component:InicioComponent},
       {path:'configuraciones', component:UserConfiguracionesComponent},
       {path:'peliculas-detail/:id', component:PeliculaDetailComponent},
       {path:'usuario/pagos', component:PagosListComponent}

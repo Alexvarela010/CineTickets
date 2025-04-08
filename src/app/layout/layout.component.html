@@ -8,9 +8,9 @@
     </button>
     <a class="btn-link" style="text-decoration: none;  color: white;" routerLink="/inicio"><h1
       class="btn-title example-app-name">CineTickets</h1></a>
-    <button mat-button mat-stroked-button class="btn btn-toolbar boton-toolbar text-white">Cartelera</button>
-    <button mat-button mat-stroked-button class="btn boton-toolbar text-white">Estrenos</button>
-    <button mat-button mat-stroked-button class="btn boton-toolbar text-white">Mejor valoradas</button>
+    <button routerLink="/inicio" mat-button mat-stroked-button class="btn btn-toolbar boton-toolbar text-white">Cartelera</button>
+    <button routerLink="/inicio" mat-button mat-stroked-button class="btn boton-toolbar text-white">Estrenos</button>
+    <button routerLink="/inicio" mat-button mat-stroked-button class="btn boton-toolbar text-white">Mejor valoradas</button>
     <button *ngIf="localStorage.getItem('logged')==='true'" class="btn boton-user text-white" (click)="menu.toggle($event)" mat-button>
       <fa-icon style="" [icon]="faUser"></fa-icon>
     </button>

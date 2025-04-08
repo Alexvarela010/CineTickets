@@ -128,7 +128,11 @@ export class FuncionesFormComponent implements OnInit {
               'Funcion creada',
               `La funcion ha sido creada con exito`,
               'success'
-            )
+            ).then((result)=>{
+              if (result.isConfirmed){
+                window.history.back();
+              }
+            })
           }
         )
 

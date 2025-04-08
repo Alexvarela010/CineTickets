@@ -43,20 +43,20 @@
                   field="titulo"
                   placeholder="Buscar una pelicula"
                   (completeMethod)="search($event)"
-                  (onSelect)="onSelect(items)"
+                  (onSelect)="onSelect($event)"
   />
 </div>
 
 
 <div class="row justify-content-around" style="padding-left: 90px;padding-right: 90px">
 
-  <a [routerLink]="['/peliculas-detail', peliculas.peliculaId]" *ngFor="let peliculas of peliculas"
+  <a  [routerLink]="['/peliculas-detail/', peliculas.peliculaId]" *ngFor="let peliculas of peliculas"
      class="card col-4 mb-4"
-     style="width: 18rem; height: 550px;padding: 20px">
+     style="width: 18rem; height: 550px;padding: 20px;text-decoration: none">
     <img style="width: 100%;height: 350px" src="{{peliculas.imagen}}" class="card-img-top mb-3" alt="...">
     <div class="card-body " style="padding: 0">
       <h5 class="card-title mb-3">{{ peliculas.titulo }}</h5>
-      <p class="card-text">{{ peliculas.descripcion }}</p>
+      <p class="card-text">{{ peliculas.descripcion | slice:0:100}}...</p>
     </div>
   </a>
 </div>

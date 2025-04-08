@@ -78,13 +78,16 @@ export class PeliculaDetailComponent implements OnInit {
       (funciones: Array<Funcion>) => {
         for (let i = 0; i < funciones.length; i++) {
           if (funciones[i].pelicula.peliculaId == this.peliculaId) {
-            this.funciones.push(funciones[i]);
-            let fecha = this.funciones[i].fecha.split("-")
-            let mesDIa = `${fecha[1]}-${fecha[2]}`;
-            this.fechanormal[i] = mesDIa;
-            let hora = this.funciones[i].hora.split(":")
-            let horaformat = `${hora[0]}-${hora[2]}`;
-            this.horanormal[i] = horaformat
+            const funcion = funciones[i];
+            this.funciones.push(funcion);
+
+            const fecha = funcion.fecha?.split("-");
+            const mesDia = `${fecha?.[1]}-${fecha?.[2]}`;
+            this.fechanormal.push(mesDia);
+
+            const hora = funcion.hora?.split(":");
+            const horaformat = `${hora?.[0]}-${hora?.[2]}`;
+            this.horanormal.push(horaformat);
           }
         }
       }
